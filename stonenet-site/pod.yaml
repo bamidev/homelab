@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stonenet-site
+  labels:
+    app: stonenet-site
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/stonenet-site:latest
+      imagePullPolicy: Never

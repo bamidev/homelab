@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: nextcloud-db
+  namespace: default
+spec:
+  instances: 1
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:17
+
+  bootstrap:
+    initdb:
+      database: nextcloud
+      owner: nextcloud
+
+  storage:
+    size: 10Gi
+    # Ensure this matches a StorageClass available on your cluster (e.g., standard, gp3, longhorn)
+    storageClass: local-path
+
+  # Resource allocations to guarantee performance and stability
+  #resources:
+  #  requests:
+  #    memory: "1Gi"
+  #    cpu: "500m"
+  #  limits:
+  #    memory: "2Gi"
+  #    cpu: "1"
+
+  # Active monitoring settings
+  #monitoring:
+  #  enablePodMonitor: true
