@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: owncast
+  labels:
+    app: owncast
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/owncast:latest
+      imagePullPolicy: Never
+      env:
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: owncast
+              key: admin-password
