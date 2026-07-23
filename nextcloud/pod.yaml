@@ -8,7 +8,7 @@ spec:
   volumes:
     - name: nas-mount
       hostPath:
-        path: /mnt/nas
+        path: /mnt/nas/nextcloud
         type: Directory
   containers:
     - name: app
@@ -27,11 +27,11 @@ spec:
             secretKeyRef:
               name: nextcloud-db-app
               key: password
-        - name: PASSWORD_ENCRYPTION_KEY
+        - name: NEXTCLOUD_SECRET
           valueFrom:
             secretKeyRef:
               name: nextcloud
-              key: password-encryption-key
+              key: secret
         - name: PASSWORD_SALT
           valueFrom:
             secretKeyRef:
