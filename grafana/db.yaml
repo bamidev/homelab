@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: nextcloud-db
+  name: grafana-db
   namespace: default
 spec:
   instances: 1
@@ -10,8 +10,8 @@ spec:
 
   bootstrap:
     initdb:
-      database: nextcloud
-      owner: nextcloud
+      database: grafana
+      owner: grafana
 
   storage:
     size: 10Gi

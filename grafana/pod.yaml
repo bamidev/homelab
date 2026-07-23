@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/grafana:latest
+      imagePullPolicy: Never
+      env:
+        - name: POSTGRES_DB
+          value: "grafana"
+        - name: POSTGRES_USER
+          value: "grafana"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grafana-db-app
+              key: password
