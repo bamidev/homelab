@@ -23,7 +23,7 @@ At this point everything should already be set up and working.
 
 ## Images
 
-All the images that are used by the pods are defined in my main NixOS config, and written in Nix: [https://github.com/bamidev/nixos-config/tree/system/lab/images].
+All the images that are used by the pods are defined in my main [NixOS config](https://github.com/bamidev/nixos-config/tree/system/lab/images), and written in Nix.
 In order build & deploy these images, the following command is available on any device that uses my NixOS config:
 ```
 deploy-image nextcloud
