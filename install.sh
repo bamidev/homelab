@@ -1,6 +1,11 @@
 # This file installs everything I need on my Kubernetes cluster.
 set -ex
 
+# The Kubernetes Descheduler
+kubectl apply -f descheduler/kubernetes/base/rbac.yaml
+kubectl apply -f descheduler/kubernetes/base/configmap.yaml
+kubectl apply -f descheduler/kubernetes/deployment/deployment.yaml
+
 # local-path-provisioner so that the CNPG databases can store everything on the disk of the node they are running on.
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.36/deploy/local-path-storage.yaml
 
