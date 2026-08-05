@@ -4,9 +4,14 @@ metadata:
   name: nextcloud-db
   namespace: default
 spec:
-  instances: 1
+  instances: 2
 
   imageName: ghcr.io/cloudnative-pg/postgresql:17
+
+  backup:
+    volumeSnapshot:
+      className: zfs-local-snapshot-class
+      snapshotOwnerReference: backup
 
   bootstrap:
     initdb:
@@ -15,4 +20,17 @@ spec:
 
   storage:
     size: 10Gi
-    storageClass: local-path
+    storageClass: zfs-local-snapshot
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: nextcloud-db-backup
+spec:
+  cluster:
+    name: nextcloud-db
+  method: volumeSnapshot
+  schedule: '0 0 0 * * *'
+  backupOwnerReference: cluster
+  immediate: true
