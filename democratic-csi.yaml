@@ -4,6 +4,9 @@ csiDriver:
   storageCapacity: true
   fsGroupPolicy: File
 
+node:
+  kubeletHostPath: "/var/lib/kubernetes"
+
 storageClasses:
   - name: zfs-local-dataset
     defaultClass: false
