@@ -2,9 +2,13 @@
 set -ex
 
 # Helm repos
+helm repo add coredns https://coredns.github.io/helm
 helm repo add democratic-csi https://democratic-csi.github.io/charts/
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
+
+# CoreDNS
+helm upgrade --install coredns coredns/coredns --version 1.14.6 --namespace=kube-system
 
 # The Kubernetes Descheduler
 kubectl apply -f descheduler/kubernetes/base/rbac.yaml
