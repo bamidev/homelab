@@ -1,0 +1,31 @@
+csiDriver:
+  name: "org.democratic-csi.zfs-local-dataset"
+
+storageClasses:
+  - name: zfs-local-dataset
+    defaultClass: false
+    reclaimPolicy: Delete
+    volumeBindingMode: WaitForFirstConsumer
+    allowVolumeExpansion: true
+    parameters:
+      fsType: zfs
+
+volumeSnapshotClasses:
+  - name: zfs-local-dataset-class
+    deletionPolicy: Delete
+
+driver:
+  config:
+    driver: zfs-local-dataset
+
+    zfs:
+      datasetParentName: tank/k8s
+      detachedSnapshotsDatasetParentName: tank/k8s-snapshots
+
+      datasetProperties:
+        # key: value
+      snapshotProperties:
+      #  "org.freenas:key": "value"
+
+      datasetEnableQuotas: false
+      datasetEnableReservation: false
