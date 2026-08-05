@@ -20,7 +20,7 @@ spec:
 
   storage:
     size: 10Gi
-    storageClass: zfs-local-snapshot
+    storageClass: zfs-local-dataset
 
 ---
 apiVersion: postgresql.cnpg.io/v1

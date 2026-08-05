@@ -1,18 +1,47 @@
 csiDriver:
   name: "org.democratic-csi.zfs-local-dataset"
+  attachRequired: false
+  storageCapacity: true
+  fsGroupPolicy: File
 
 storageClasses:
   - name: zfs-local-dataset
     defaultClass: false
     reclaimPolicy: Delete
     volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
+    allowVolumeExpansion: false
     parameters:
       fsType: zfs
 
+    mountOptions: []
+
 volumeSnapshotClasses:
-  - name: zfs-local-dataset-class
-    deletionPolicy: Delete
+  - name: zfs-local-dataset
+
+controller:
+  enabled: true
+  strategy: node
+  externalProvisioner:
+    extraArgs:
+      - --leader-election=false
+      - --node-deployment=true
+      - --node-deployment-immediate-binding=true
+      - --feature-gates=Topology=true
+      - --strict-topology=true
+      - --enable-capacity=true
+      - --capacity-ownerref-level=1
+
+  externalAttacher:
+    enabled: false
+
+  externalResizer:
+    enabled: false
+
+  externalSnapshotter:
+    enabled: true
+    extraArgs:
+      - --leader-election=false
+      - --node-deployment=true
 
 driver:
   config:
