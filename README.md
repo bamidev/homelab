@@ -7,16 +7,22 @@ There are also some scripts to set the cluster up with the necessary systems, an
 ## Setup
 
 To set up the cluster, run `./install.sh` first.
-This will install CNPG & ingress-nginx.
+This will install all needed components.
+This includes:
+* CoreDNS, as the cluster's dns server.
+* descheduler, to automatically rebalance pods among nodes.
+* CNPG, to manage Postgres database clusters (e.g. a primary and standby/readonly servers).
+* democratic-csi, to allow the Postgres databases to be stored on the disk of the node that runs it.
 
 To load all the secrets from my password store into the cluster, use `./secrets.sh`.
+This will take the secrets from my password-store and insert it into the cluster.
 
 Then, each of the following services can be enabled by applying the corresponding folder, like so:
 ```
-kubectl apply -f ./grafana
-kubectl apply -f ./nextcloud
-kubectl apply -f ./owncast
-kubectl apply -f ./stonenet-site
+kubectl apply -f ./apps/grafana
+kubectl apply -f ./apps/nextcloud
+kubectl apply -f ./apps/owncast
+kubectl apply -f ./apps/stonenet-site
 ```
 
 At this point everything should already be set up and working.
