@@ -1,7 +1,0 @@
-[submodule "ingress-nginx"]
-	path = ingress-nginx
-	url = https://github.com/nginx/kubernetes-ingress.git
-[submodule "descheduler"]
-	path = descheduler
-	url = https://github.com/kubernetes-sigs/descheduler.git
-	branch = release-1.36
