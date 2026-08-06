@@ -18,10 +18,9 @@ kubectl apply -f descheduler/kubernetes/deployment/deployment.yaml
 # Traefik
 helm upgrade --install traefik traefik/traefik --version 41.1.1 -f traefik/values.yaml --wait
 
-# local-path-provisioner so that the CNPG databases can store everything on the disk of the node they are running on.
-kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.36/deploy/local-path-storage.yaml
-
-# democratic-csi allows Kubernetes to make snapshots
+# democratic-csi to give Kubernetes some storage abilities
+helm upgrade --install --namespace kube-system --create-namespace snapshot-controller democratic-csi/snapshot-controller
+kubectl -n kube-system logs -f -l app=snapshot-controller
 helm upgrade --install local-zfs-dataset democratic-csi/democratic-csi --version 0.15.1 --create-namespace --namespace democratic-csi -f values/democratic-csi.yaml
 
 # CNPG (CloudNativePostGres)
