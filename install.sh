@@ -8,7 +8,7 @@ helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
 # CoreDNS
-helm upgrade --install coredns coredns/coredns --version 1.14.6 --namespace=kube-system
+helm upgrade --install coredns coredns/coredns --version 1.14.6 --namespace=kube-system -f values/coredns.yaml
 
 # The Kubernetes Descheduler
 kubectl apply -f descheduler/kubernetes/base/rbac.yaml
