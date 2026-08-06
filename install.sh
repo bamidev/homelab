@@ -22,7 +22,7 @@ helm upgrade --install traefik traefik/traefik --version 41.1.1 -f traefik/value
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.36/deploy/local-path-storage.yaml
 
 # democratic-csi allows Kubernetes to make snapshots
-helm upgrade --install local-zfs-dataset democratic-csi/democratic-csi --version 0.15.1 --create-namespace --namespace democratic-csi -f democratic-csi.yaml
+helm upgrade --install local-zfs-dataset democratic-csi/democratic-csi --version 0.15.1 --create-namespace --namespace democratic-csi -f values/democratic-csi.yaml
 
 # CNPG (CloudNativePostGres)
 kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.30/releases/cnpg-1.30.0.yaml

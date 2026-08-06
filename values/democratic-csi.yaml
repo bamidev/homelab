@@ -19,7 +19,8 @@ storageClasses:
     mountOptions: []
 
 volumeSnapshotClasses:
-  - name: zfs-local-dataset
+  - name: zfs-local-dataset-snapshot
+    deletionPolicy: Delete
 
 controller:
   enabled: true
