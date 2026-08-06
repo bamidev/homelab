@@ -10,7 +10,7 @@ spec:
 
   backup:
     volumeSnapshot:
-      className: zfs-local-snapshot-class
+      className: zfs-local-dataset-snapshot
       snapshotOwnerReference: backup
 
   bootstrap:
