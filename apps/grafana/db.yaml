@@ -1,8 +1,8 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: grafana-db
-  namespace: default
+  name: production-database
+  namespace: grafana
 spec:
   instances: 1
 

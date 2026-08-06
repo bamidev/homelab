@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: stonenet-site
+  name: site-production
+  namespace: stonenet
   labels:
-    app: stonenet-site
+    app: site-production
 spec:
   containers:
     - name: app

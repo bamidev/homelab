@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana-service
-  namespace: default
+  name: site-service
+  namespace: stonenet
 spec:
   type: NodePort
   
   selector:
-    app: grafana
+    app: site-production
     
   ports:
   - name: http
-    port: 4723 # GRAF
+    port: 7866 # STON
     targetPort: 8080
-    nodePort: 30002
+    nodePort: 30001
     protocol: TCP

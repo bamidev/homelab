@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nextcloud
+  name: production
+  namespace: nextcloud
   labels:
-    app: nextcloud
+    app: production
 spec:
   volumes:
     - name: nas-mount
@@ -25,15 +26,15 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: nextcloud-db-app
+              name: production-database-app
               key: password
         - name: NEXTCLOUD_SECRET
           valueFrom:
             secretKeyRef:
-              name: nextcloud
+              name: credentials
               key: secret
         - name: PASSWORD_SALT
           valueFrom:
             secretKeyRef:
-              name: nextcloud
+              name: credentials
               key: password-salt

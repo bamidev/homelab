@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: owncast
+  name: production
+  namespace: owncast
   labels:
-    app: owncast
+    app: production
 spec:
   containers:
     - name: app
@@ -13,5 +14,5 @@ spec:
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: owncast
+              name: credentials
               key: admin-password
