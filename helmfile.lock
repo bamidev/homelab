@@ -1,0 +1,22 @@
+version: v1.5.0
+dependencies:
+  - name: cloudnative-pg
+    repository: https://cloudnative-pg.github.io/charts
+    version: 0.29.0
+  - name: coredns
+    repository: https://coredns.github.io/helm
+    version: 1.47.0
+  - name: democratic-csi
+    repository: https://democratic-csi.github.io/charts
+    version: 0.15.1
+  - name: descheduler
+    repository: https://kubernetes-sigs.github.io/descheduler
+    version: 0.36.0
+  - name: snapshot-controller
+    repository: https://democratic-csi.github.io/charts
+    version: 0.3.0
+  - name: traefik
+    repository: https://traefik.github.io/charts
+    version: 41.1.1
+digest: sha256:a1f4d980925ddbe86bbbc8ac131bb2db2ae56bfcbadfa838fc3766592e7be985
+generated: "2026-08-07T11:08:07.419575669+02:00"

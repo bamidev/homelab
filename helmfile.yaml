@@ -1,0 +1,71 @@
+# My helmfile configuration
+helmDefaults:
+  createNamespace: true
+  wait: true
+  timeout: 300
+
+# Chart repositories
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: coredns
+    url: https://coredns.github.io/helm
+  - name: democratic-csi
+    url: https://democratic-csi.github.io/charts
+  - name: descheduler
+    url: https://kubernetes-sigs.github.io/descheduler
+  - name: traefik
+    url: https://traefik.github.io/charts
+
+releases:
+  ### All cluster components ###
+  # The CloudNativePostGres Operator is used to maintain clusters of Postgres databases (primary & standby)
+  - name: cnpg
+    namespace: cnpg-system
+    chart: cnpg/cloudnative-pg
+
+  # Use CoreDNS rather than the standard kube-dns component 
+  - name: coredns
+    namespace: kube-system
+    chart: coredns/coredns
+    values:
+      - values/coredns.yaml
+
+  # Use the descheduler to automatically balance busy nodes
+  - name: descheduler
+    namespace: kube-system
+    chart: descheduler/descheduler
+
+  # Use the local-zfs-dataset driver of democratic-csi in order to store the databases on the disk of the node that runs it
+  - name: local-zfs-dataset
+    namespace: democratic-csi
+    chart: democratic-csi/democratic-csi
+    values:
+      - values/democratic-csi.yaml
+
+  # Use traefik as the reverse proxy
+  - name: traefik
+    namespace: traefik
+    chart: traefik/traefik
+
+  # The snapshot-controller is needed to be able to have CNPG take periodic snapshots of the databases
+  - name: snapshot-controller
+    namespace: kube-system
+    chart: democratic-csi/snapshot-controller
+
+  ### My apps ###
+  - name: grafana
+    namespace: grafana
+    chart: ./apps/grafana
+
+  - name: nextcloud
+    namespace: nextcloud
+    chart: ./apps/nextcloud
+
+  - name: owncast
+    namespace: owncast
+    chart: ./apps/owncast
+  
+  - name: stonenet-site
+    namespace: stonenet
+    chart: ./apps/stonenet-site
