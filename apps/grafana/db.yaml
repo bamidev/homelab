@@ -4,7 +4,7 @@ metadata:
   name: production-database
   namespace: grafana
 spec:
-  instances: 1
+  instances: 2
 
   imageName: ghcr.io/cloudnative-pg/postgresql:17
 
