@@ -16,8 +16,13 @@ It will install all the components and my apps.
 
 ## Images
 
-All the app images that are defined in my main [NixOS config](https://github.com/bamidev/nixos-config/tree/system/lab/images), and written in Nix.
-In order build & deploy these images, the following command is available on any device that uses my NixOS config:
+All the app images are defined in Nix using `pkgs.dockerTools`, and are available as a 'package' in the flake.
+For example, here is how you can build an image:
+```
+nix build -o nextcloud-image.tar.gz .#nextcloud
+```
+
+To deploy these images, the following command is available on any device that uses [my NixOS config](https://github.com/bamidev/nixos-config), assuming your working directory is in this repo:
 ```
 deploy-image nextcloud
 ```
