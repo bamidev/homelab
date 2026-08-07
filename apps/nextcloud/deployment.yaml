@@ -1,0 +1,52 @@
+# Nextcloud is deployed as if it were 'stateless'.
+# The database is managed by CNPG, and its file are hosted on a NAS, which the image put an exclusive lock on.
+# So there should be no issue with where two pods accidentally write data to the same thing.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: production
+  namespace: nextcloud
+  labels:
+    app: production
+spec:
+  selector:
+    matchLabels:
+      app: production
+  template:
+    metadata:
+      labels:
+        app: production
+    spec:
+      volumes:
+        - name: nas-mount
+          nfs:
+            server: nas.kubes
+            path: /exhdd/nextcloud
+            readOnly: false
+      containers:
+        - name: app
+          image: docker.io/library/nextcloud:latest
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: nas-mount
+              mountPath: /mnt
+          env:
+            - name: POSTGRES_DB
+              value: "nextcloud"
+            - name: POSTGRES_USER
+              value: "nextcloud"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: production-database-app
+                  key: password
+            - name: NEXTCLOUD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: secret
+            - name: PASSWORD_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: password-salt

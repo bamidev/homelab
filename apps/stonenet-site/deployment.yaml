@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: production-site
+  namespace: stonenet
+  labels:
+    app: production-site
+spec:
+  selector:
+    matchLabels:
+      app: production-site
+  template:
+    metadata:
+      labels:
+        app: production-site
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/stonenet-site:latest
+          imagePullPolicy: Never
