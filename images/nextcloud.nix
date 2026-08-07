@@ -1,5 +1,5 @@
 # The Nextcloud container is running with Apache and PHP-FPM.
-# Apache is used because Nextcloud uses an .htaccess file.
+# Apache is used because Nextcloud uses an .htaccess file to handle some of the URL rewriting.
 { pkgs, ... }:
 let
   nextcloud = pkgs.nextcloud34;
@@ -120,15 +120,21 @@ let
     cp -r ${nextcloud}/* /tmp/nextcloud
     chown -R httpd:httpd /tmp/nextcloud
     chmod -R +w /tmp/nextcloud/config
-    su - httpd -c "${php}/bin/php /tmp/nextcloud/occ maintenance:install --database=pgsql --database-name=nextcloud --database-host=\"production-database-rw\" --database-user=nextcloud --database-pass=\"$POSTGRES_PASSWORD\" --data-dir=/mnt/data --password-salt=\"$PASSWORD_SALT\" --server-secret=\"$NEXTCLOUD_SECRET\""
+    runuser -u httpd -- ${php}/bin/php /tmp/nextcloud/occ maintenance:install --database=pgsql --database-name=nextcloud --database-host=production-database-rw --database-user=nextcloud --database-pass="$POSTGRES_PASSWORD" --data-dir=/mnt/data --password-salt="$PASSWORD_SALT" --server-secret="$NEXTCLOUD_SECRET"
 
     # Cleanup
     rm -r /tmp/nextcloud
+
+    # Install my preferred apps
+    ${occScript}/bin/nextcloud-occ app:enable bookmarks
+    ${occScript}/bin/nextcloud-occ app:enable calendar
+    ${occScript}/bin/nextcloud-occ app:enable contacts
+    ${occScript}/bin/nextcloud-occ app:enable server-info # Should already be enabled
   '';
 
   occScript = pkgs.writers.writeBashBin "nextcloud-occ" ''
     set -e
-    sudo httpd ${php}/bin/php ${nextcloud}/occ $@
+    ${pkgs.util-linux}/bin/runuser -u httpd -- ${php}/bin/php ${nextcloud}/occ $@
   '';
 in
 pkgs.dockerTools.buildImage {
@@ -158,7 +164,6 @@ pkgs.dockerTools.buildImage {
     gnused
     php
     su
-    sudo
 
     (writeTextDir "var/nextcloud/config/config.php" nextcloudConfig)
 
@@ -168,8 +173,8 @@ pkgs.dockerTools.buildImage {
 
   config = {
     Cmd = [
-      # Make sure to exclusively lock the mounted NFS folder, so that no second Nextcloud pod can
-      # mount it, and we won't get data corruption if Nextcloud doesn't lock its files very well.
+      # Make sure to exclusively lock the mounted NAS folder, so that no second Nextcloud pod can
+      # mount it, and we can't get data corruption when multiple pods happen to use the NAS folder.
       "${pkgs.flock}/bin/flock"
       "--verbose"
       "-n"

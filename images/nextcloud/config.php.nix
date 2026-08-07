@@ -11,12 +11,12 @@
       '172.0.0.11',
     ],
     'trusted_proxies' => [
-      '10.0.0.0/16',
+      '10.0.0.0/8',
       '172.0.0.0/24',
     ],
     'overwrite.cli.url' => 'http://localhost',
     'datadirectory' => '/mnt/data',
-    'version' => '${nextcloud.version}.2',
+    'version' => '${nextcloud.version}.1',
 
     // Database
     'dbtype' => 'pgsql',
