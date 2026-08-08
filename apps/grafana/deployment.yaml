@@ -1,28 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: production
+  name: main
   namespace: grafana
   labels:
-    app: production
+    app: main
 spec:
   selector:
     matchLabels:
-      app: production
+      app: main
   template:
     metadata:
       labels:
-        app: production
+        app: main
     spec:
       containers:
         - name: app
           image: docker.io/library/grafana:latest
           imagePullPolicy: Never
           env:
-            - name: POSTGRES_DB
-              value: "grafana"
-            - name: POSTGRES_USER
-              value: "grafana"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

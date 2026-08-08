@@ -15,7 +15,7 @@ let
 
     [database]
     type = postgres
-    host = production-database-rw
+    host = database-rw
     name = grafana
     user = grafana
     password = ''${POSTGRES_PASSWORD}
