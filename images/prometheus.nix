@@ -15,16 +15,32 @@ let
       # Prometheus self-monitoring
       - job_name: "prometheus"
         static_configs:
-          - targets: ["localhost:9090"]
+          - targets: ["localhost:8080"]
 
       # Nextcloud application metrics
       - job_name: "nextcloud"
         scrape_interval: 60s         # Nextcloud API can be slow; use longer interval
         scrape_timeout: 30s
         static_configs:
-          - targets: ["localhost:6398"]
+          - targets: ["service.nextcloud.svc.cluster.local:6399"]
             labels:
               instance: "nextcloud-production"
+
+      # Node Exporter for OS-level metrics
+      - job_name: "node"
+        static_configs:
+          - targets: ["127.0.0.1:9100"]
+            labels:
+              instance: "local-node"
+  '';
+
+  entrypointScript = pkgs.writers.writeBashBin "entrypoint.sh" ''
+    set -ex
+    ${pkgs.prometheus}/bin/prometheus \
+      --config.file=${prometheusConfig} \
+      --storage.tsdb.path=/mnt \
+      --storage.tsdb.retention.time=90d \
+      --web.listen-address=:8080
   '';
 in
 pkgs.dockerTools.buildLayeredImage {
@@ -32,8 +48,11 @@ pkgs.dockerTools.buildLayeredImage {
 
   config = {
     Cmd = [
-      "${pkgs.prometheus}/bin/prometheus"
-      "--config.file=${prometheusConfig}"
+      "${pkgs.flock}/bin/flock"
+      "--verbose"
+      "-n"
+      "/mnt"
+      "${entrypointScript}/bin/entrypoint.sh"
     ];
     ExposedPorts = {
       "8080/tcp" = { };

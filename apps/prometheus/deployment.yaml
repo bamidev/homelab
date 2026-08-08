@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+  namespace: prometheus
+  labels:
+    app: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      volumes:
+        - name: nas-mount
+          nfs:
+            server: nas.kubes
+            path: /exhdd/prometheus
+            readOnly: false
+      containers:
+        - name: app
+          image: docker.io/library/prometheus:latest
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: nas-mount
+              mountPath: /mnt

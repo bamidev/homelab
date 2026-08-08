@@ -6,6 +6,7 @@
     'passwordsalt' => 'PASSWORD_SALT',
     'secret' => 'NEXTCLOUD_SECRET',
     'trusted_domains' => [
+      'service.nextcloud.svc.cluster.local',
       'nextcloud.kubes',
       '192.168.0.77',
       '172.0.0.11',

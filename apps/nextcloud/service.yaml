@@ -10,8 +10,14 @@ spec:
     app: production
     
   ports:
-  - name: http
-    port: 6398  # NEXT
-    targetPort: 8080
-    nodePort: 30000
-    protocol: TCP
+    # The web server
+    - name: server
+      port: 6398  # NEXT
+      targetPort: 8080
+      nodePort: 30000
+      protocol: TCP
+    # The Prometheus exporter
+    - name: exporter
+      port: 6399
+      targetPort: 9205
+      protocol: TCP

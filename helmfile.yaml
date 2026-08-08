@@ -65,6 +65,10 @@ releases:
   - name: owncast
     namespace: owncast
     chart: ./apps/owncast
+
+  - name: prometheus
+    namespace: prometheus
+    chart: ./apps/prometheus
   
   - name: stonenet-site
     namespace: stonenet
