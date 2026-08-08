@@ -122,7 +122,7 @@ let
     cp -r ${nextcloud}/* /tmp/nextcloud
     chown -R httpd:httpd /tmp/nextcloud
     chmod -R +w /tmp/nextcloud/config
-    runuser -u httpd -- ${php}/bin/php /tmp/nextcloud/occ maintenance:install --database=pgsql --database-name=nextcloud --database-host=production-database-rw --database-user=nextcloud --database-pass="$POSTGRES_PASSWORD" --data-dir=/mnt/data --password-salt="$PASSWORD_SALT" --server-secret="$NEXTCLOUD_SECRET"
+    runuser -u httpd -- ${php}/bin/php /tmp/nextcloud/occ maintenance:install --database=pgsql --database-name=nextcloud --database-host=production-database-rw --database-user=nextcloud --database-pass="$POSTGRES_PASSWORD" --data-dir=/mnt/data --password-salt="$PASSWORD_SALT" --server-secret="$NEXTCLOUD_SECRET" --admin-pass="$ADMIN_PASSWORD"
 
     # Cleanup
     rm -r /tmp/nextcloud
@@ -133,7 +133,8 @@ let
     ${occScript}/bin/nextcloud-occ app:enable contacts
     ${occScript}/bin/nextcloud-occ app:enable server-info # Should already be enabled
 
-    ${occScript}/bin/nextcloud-occ user:add --group=admin monitoring # Should already be enabled
+
+    NC_PASS="$MONITORING_PASSWORD" ${occScript}/bin/nextcloud-occ user:add --group=admin --password-from-env monitoring # Should already be enabled
   '';
 
   occScript = pkgs.writers.writeBashBin "nextcloud-occ" ''
