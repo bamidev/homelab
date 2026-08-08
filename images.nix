@@ -6,6 +6,7 @@ let
     bash
     coreutils
     gnugrep
+    gnused
     nano
     ps
     su
@@ -18,12 +19,7 @@ let
   );
 
   # All the available images
-  images = [
-    "grafana"
-    "nextcloud"
-    "owncast"
-    "stonenet-site"
-  ];
+  images = pkgs.lib.attrsets.mapAttrsToList (name: _: name) (pkgs.lib.attrsets.filterAttrs (_: value: value == "directory") (builtins.readDir ./apps));
 in
 builtins.listToAttrs (
   map (name: {

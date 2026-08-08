@@ -50,3 +50,13 @@ spec:
                 secretKeyRef:
                   name: credentials
                   key: password-salt
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: admin-password
+            - name: MONITORING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: monitoring-password

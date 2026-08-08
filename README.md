@@ -8,7 +8,7 @@ There are also some scripts to set the cluster up with the necessary systems, an
 
 To set up the cluster, run:
 ```
-helmfile apply
+sudo -E helmfile apply
 ```
 That should do it.
 

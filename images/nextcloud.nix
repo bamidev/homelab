@@ -98,6 +98,8 @@ let
 
     ${php}/bin/php-fpm -F -O --fpm-config ${phpFpmConfig} &
     ${pkgs.apacheHttpd}/bin/httpd -D FOREGROUND -f ${apacheConfig} &
+    ${pkgs.prometheus-nextcloud-exporter}/bin/nextcloud-exporter --server http://127.0.0.1 \
+      --username monitoring --password "$MONITORING_PASSWORD" &
     wait -n
   '';
 
@@ -130,6 +132,8 @@ let
     ${occScript}/bin/nextcloud-occ app:enable calendar
     ${occScript}/bin/nextcloud-occ app:enable contacts
     ${occScript}/bin/nextcloud-occ app:enable server-info # Should already be enabled
+
+    ${occScript}/bin/nextcloud-occ user:add --group=admin monitoring # Should already be enabled
   '';
 
   occScript = pkgs.writers.writeBashBin "nextcloud-occ" ''
@@ -161,9 +165,6 @@ pkgs.dockerTools.buildImage {
   '';
 
   contents = with pkgs; [
-    gnused
-    php
-    su
 
     (writeTextDir "var/nextcloud/config/config.php" nextcloudConfig)
 
