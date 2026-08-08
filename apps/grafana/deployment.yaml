@@ -22,5 +22,5 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: production-database-app
+                  name: database-app
                   key: password
