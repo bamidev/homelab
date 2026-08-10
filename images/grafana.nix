@@ -4,6 +4,13 @@ let
   grafanaConfig = pkgs.writers.writeText "grafana.ini" ''
     instance_name = grafana
 
+    # Enable anonymous authentication to allow for externally shared dashboards
+    [auth.anonymous]
+    enabled = true
+    hide_version = true
+    org_name = Anonymous
+    org_role = Viewer
+
     [security]
     admin_user = admin
 
@@ -11,7 +18,9 @@ let
     logs = /dev/stderr
 
     [server]
+    domain = 172.0.0.11:30002
     http_port = 8080
+    root_url = http://%(domain)s/
 
     [database]
     type = postgres
