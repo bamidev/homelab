@@ -98,7 +98,7 @@ let
 
     ${php}/bin/php-fpm -F -O --fpm-config ${phpFpmConfig} &
     ${pkgs.apacheHttpd}/bin/httpd -D FOREGROUND -f ${apacheConfig} &
-    ${pkgs.prometheus-nextcloud-exporter}/bin/nextcloud-exporter --server http://127.0.0.1 \
+    ${pkgs.prometheus-nextcloud-exporter}/bin/nextcloud-exporter --server http://127.0.0.1:8080 \
       --username monitoring --password "$MONITORING_PASSWORD" &
     wait -n
   '';

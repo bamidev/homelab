@@ -3,9 +3,9 @@
 let
   prometheusConfig = pkgs.writers.writeText "prometheus.yaml" ''
     global:
-      scrape_interval: 60s          # How often to scrape targets
-      evaluation_interval: 60s      # How often to evaluate alerting rules
-      scrape_timeout: 15s           # Timeout for each scrape request
+      scrape_interval: 60s
+      evaluation_interval: 60s
+      scrape_timeout: 15s
 
       external_labels:
         environment: production
