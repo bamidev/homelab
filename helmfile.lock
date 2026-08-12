@@ -12,6 +12,9 @@ dependencies:
   - name: descheduler
     repository: https://kubernetes-sigs.github.io/descheduler
     version: 0.36.0
+  - name: metallb
+    repository: https://metallb.github.io/metallb
+    version: 0.16.1
   - name: snapshot-controller
     repository: https://democratic-csi.github.io/charts
     version: 0.3.0

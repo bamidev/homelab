@@ -1,14 +1,14 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: nextcloud-route
-  namespace: nextcloud
+  name: grafana-route
+  namespace: grafana
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`nextcloud.bamilab.space`)
+    - match: Host(`grafana.bamilab.space`)
       kind: Rule
       services:
         - name: service
-          port: 6398
+          port: 4723

@@ -6,10 +6,13 @@
     'passwordsalt' => 'PASSWORD_SALT',
     'secret' => 'NEXTCLOUD_SECRET',
     'trusted_domains' => [
-      'service.nextcloud.svc.cluster.local',
-      'nextcloud.kubes',
-      '192.168.0.77',
+      'nextcloud.bamilab.space',              # The external domain
+      'service.nextcloud.svc.cluster.local',  # The cluster-wide local domain
+      '192.168.0.77',                         # The VRRP ip address
+      # The 3 VPN IP addresses of the kubernetes control nodes
+      '172.0.0.10',
       '172.0.0.11',
+      '172.0.0.12',
     ],
     'trusted_proxies' => [
       '10.0.0.0/8',

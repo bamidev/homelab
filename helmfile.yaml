@@ -14,6 +14,8 @@ repositories:
     url: https://democratic-csi.github.io/charts
   - name: descheduler
     url: https://kubernetes-sigs.github.io/descheduler
+  - name: metallb
+    url: https://metallb.github.io/metallb
   - name: traefik
     url: https://traefik.github.io/charts
 
@@ -43,15 +45,31 @@ releases:
     values:
       - values/democratic-csi.yaml
 
+  - name: metallb
+    namespace: metallb
+    chart: metallb/metallb
+    values:
+      - values/metallb.yaml
+
   # Use traefik as the reverse proxy
   - name: traefik
     namespace: traefik
     chart: traefik/traefik
+    wait: false
+    values:
+      - values/traefik.yaml
 
   # The snapshot-controller is needed to be able to have CNPG take periodic snapshots of the databases
   - name: snapshot-controller
     namespace: kube-system
     chart: democratic-csi/snapshot-controller
+
+  ### Additional manifests ###
+  - name: metallb-config
+    namespace: metallb
+    chart: ./extra/metallb
+    needs:
+      - metallb/metallb
 
   ### My apps ###
   - name: grafana

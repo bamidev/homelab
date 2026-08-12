@@ -1,0 +1,8 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: vpn-ip-pool
+  namespace: metallb
+spec:
+  addresses:
+    - 172.0.0.10-172.0.0.12

@@ -18,7 +18,7 @@ let
     logs = /dev/stderr
 
     [server]
-    domain = 172.0.0.11:30002
+    domain = grafana.bamilab.space
     http_port = 8080
     root_url = http://%(domain)s/
 
