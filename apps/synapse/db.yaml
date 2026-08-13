@@ -1,0 +1,37 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: production-database
+  namespace: synapse
+spec:
+  instances: 2
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:17
+
+  backup:
+    volumeSnapshot:
+      className: zfs-local-dataset-snapshot
+      snapshotOwnerReference: backup
+
+  bootstrap:
+    initdb:
+      database: synapse
+      owner: synapse
+
+  storage:
+    size: 10Gi
+    storageClass: zfs-local-dataset
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: database-backup
+  namespace: synapse
+spec:
+  cluster:
+    name: production-database
+  method: volumeSnapshot
+  schedule: '0 0 0 * * *'
+  backupOwnerReference: cluster
+  immediate: true

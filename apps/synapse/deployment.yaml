@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: production
+  namespace: synapse
+  labels:
+    app: production
+spec:
+  selector:
+    matchLabels:
+      app: production
+  template:
+    metadata:
+      labels:
+        app: production
+    spec:
+      volumes:
+        - name: nas-mount
+          nfs:
+            server: nas.kubes
+            path: /exhdd/synapse
+            readOnly: false
+      containers:
+        - name: app
+          image: docker.io/library/synapse:latest
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: nas-mount
+              mountPath: /mnt
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: production-database-app
+                  key: password

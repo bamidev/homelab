@@ -91,3 +91,7 @@ releases:
   - name: stonenet-site
     namespace: stonenet
     chart: ./apps/stonenet-site
+  
+  - name: synapse
+    namespace: synapse
+    chart: ./apps/synapse
