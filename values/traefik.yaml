@@ -13,8 +13,6 @@ metrics:
 ports:
   web:
     exposedPort: 80
-    port: 8000
-    nodePort: 32123
   # Port 9100 is already taken by the node exporter on each node's system
   metrics:
     expose:
