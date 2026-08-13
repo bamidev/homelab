@@ -17,14 +17,27 @@ let
         static_configs:
           - targets: ["localhost:8080"]
 
+      # Traefik metrics
+      - job_name: "traefik"
+        static_configs:
+          - targets: ["traefik.traefik.svc.cluster.local:9101"]
+            labels:
+              instance: "traefik"
+
       # Nextcloud application metrics
       - job_name: "nextcloud"
-        scrape_interval: 60s
         scrape_timeout: 30s
         static_configs:
           - targets: ["service.nextcloud.svc.cluster.local:6399"]
             labels:
               instance: "nextcloud-production"
+
+      # Synapse metrics
+      - job_name: "synapse"
+        static_configs:
+          - targets: ["service.synapse.svc.cluster.local:7963"]
+            labels:
+              instance: "synapse-production"
 
       # All node metrics
       - job_name: "node-old-laptop-msi"
@@ -43,7 +56,7 @@ let
             labels:
               instance: "node-thinkcentre"
       # TODO: Configure the domain names in the nixos-config repo, and us them here somehow.
-      #       Maybe it can be done by importing the flake, and then utilizing the options in config.nix
+      #       Maybe it can be done by importing the flake, and then utilizing the options in config.nix?
   '';
 
   entrypointScript = pkgs.writers.writeBashBin "entrypoint.sh" ''
