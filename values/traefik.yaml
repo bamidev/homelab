@@ -6,6 +6,10 @@ ingressRoute:
       - web
       - websecure
 
+metrics:
+  prometheus:
+    addRoutersLabels: true
+
 ports:
   web:
     exposedPort: 80
@@ -13,9 +17,9 @@ ports:
     nodePort: 32123
   # Port 9100 is already taken by the node exporter on each node's system
   metrics:
-    port: 9101
+    expose:
+      default: true
     exposedPort: 9101
-    #hostPort: 9101
 
 gateway:
   listeners:
