@@ -64,6 +64,10 @@ releases:
     namespace: kube-system
     chart: democratic-csi/snapshot-controller
 
+  ### Cluser roles ###
+  - name: roles
+    chart: ./roles
+
   ### Additional manifests ###
   - name: metallb-config
     namespace: metallb
