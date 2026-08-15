@@ -1,3 +1,9 @@
+accessLog:
+  enabled: true
+  # Limit the access log to only those requests which are concerning for security
+  filters:
+    statusCodes: "400,401,403,405,406,407,411,412,413,414,415,416,421,422,423,424,425,426,428,429,431,451,500,501,502,503,504,505,506,507,508,510,511"
+
 ingressRoute:
   dashboard:
     enabled: true
