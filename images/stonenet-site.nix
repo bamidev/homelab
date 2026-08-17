@@ -29,6 +29,19 @@ let
             try_files $uri $uri/ =404;
           }
         }
+
+        server {
+          listen 8080;
+          server_name get.stonenet.org;
+          access_log /dev/stderr;
+          port_in_redirect off;
+  
+          root /mnt;
+
+          location / {
+            autoindex on;
+          }
+        }
       }
     ''
   );

@@ -14,7 +14,16 @@ spec:
       labels:
         app: production-site
     spec:
+      volumes:
+        - name: nas-mount
+          nfs:
+            server: nas.kubes
+            path: /exhdd/stonenet-site
+            readOnly: true
       containers:
         - name: app
           image: docker.io/library/stonenet-site:latest
           imagePullPolicy: Never
+          volumeMounts:
+            - name: nas-mount
+              mountPath: /mnt
