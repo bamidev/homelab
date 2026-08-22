@@ -4,6 +4,7 @@ let
   # the containers.
   devpkgs = with pkgs; [
     bash
+    busybox
     coreutils
     gnugrep
     gnused

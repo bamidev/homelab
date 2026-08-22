@@ -96,11 +96,17 @@ let
     chown -R httpd:httpd /mnt
     chmod -R 777 /tmp
 
+    # Spawn php-fpm, apache and the nextcloud-exporter
     ${php}/bin/php-fpm -F -O --fpm-config ${phpFpmConfig} &
     ${pkgs.apacheHttpd}/bin/httpd -D FOREGROUND -f ${apacheConfig} &
     ${pkgs.prometheus-nextcloud-exporter}/bin/nextcloud-exporter --server http://127.0.0.1:8080 \
       --username monitoring --password "$MONITORING_PASSWORD" &
+
+    # Wait until one of the processes stops, then 
+    JOBS=$(jobs -p)
     wait -n
+    kill $JOBS
+    wait $JOBS
   '';
 
   installScript = pkgs.writers.writeBashBin "nextcloud-install" ''

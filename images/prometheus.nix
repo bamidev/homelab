@@ -1,6 +1,8 @@
 # The container image for Prometheus.
 { pkgs, ... }:
 let
+  secretsPath = "/var/lib/kubernetes/secrets";
+
   prometheusConfig = pkgs.writers.writeText "prometheus.yaml" ''
     global:
       scrape_interval: 60s
@@ -45,6 +47,14 @@ let
           - targets: ["192.168.0.123:9100"]
             labels:
               instance: "node-old-laptop-msi"
+      - job_name: "node-old-laptop-msi-cadvisor"
+        scheme: https
+        metrics_path: /metrics/cadvisor
+        static_configs:
+          - targets: ["192.168.0.123:10250"]
+        tls_config:
+          ca_file: ${secretsPath}/ca.pem
+            
       - job_name: "node-old-laptop-asus"
         static_configs:
           - targets: ["192.168.0.134:9100"]

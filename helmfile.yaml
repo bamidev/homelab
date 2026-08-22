@@ -2,7 +2,7 @@
 helmDefaults:
   createNamespace: true
   wait: true
-  timeout: 120
+  timeout: 300
 
 # Chart repositories
 repositories:
@@ -45,6 +45,7 @@ releases:
     values:
       - values/democratic-csi.yaml
 
+  # Use MetalLB for giving the LoadBalancer service of Traefik, use pre-configured external IP addresses.
   - name: metallb
     namespace: metallb
     chart: metallb/metallb

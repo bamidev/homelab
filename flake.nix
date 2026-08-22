@@ -18,6 +18,10 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
+        devShells.default = import ./dev-shell.nix {
+          inherit pkgs;
+        };
+
         packages = import ./images.nix {
           inherit pkgs;
         };
