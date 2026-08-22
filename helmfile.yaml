@@ -45,6 +45,19 @@ releases:
     values:
       - values/democratic-csi.yaml
 
+  # Piraeus uses Linstor to provide replicated storage in the cluster.
+  - name: piraeus-operator
+    namespace: piraeus-datastore
+    createNamespace: true
+    chart: oci://ghcr.io/piraeusdatastore/piraeus-operator/piraeus
+    values: [ values/piraeus.yaml ]
+  - name: linstor-cluster
+    namespace: piraeus-datastore
+    chart: oci://ghcr.io/piraeusdatastore/helm-charts/linstor-cluster
+    values: [ values/linstor-cluster.yaml ]
+    needs:
+      - piraeus-datastore/piraeus-operator
+
   # Use MetalLB for giving the LoadBalancer service of Traefik, use pre-configured external IP addresses.
   - name: metallb
     namespace: metallb
