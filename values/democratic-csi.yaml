@@ -5,7 +5,7 @@ csiDriver:
   fsGroupPolicy: File
 
 node:
-  kubeletHostPath: "/var/lib/kubernetes"
+  kubeletHostPath: "/var/lib/kubelet"
 
 storageClasses:
   - name: zfs-local-dataset
