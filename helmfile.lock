@@ -15,14 +15,11 @@ dependencies:
   - name: metallb
     repository: https://metallb.github.io/metallb
     version: 0.16.1
-  - name: minio
-    repository: https://charts.min.io/
-    version: 5.4.0
   - name: snapshot-controller
     repository: https://democratic-csi.github.io/charts
     version: 0.3.0
   - name: traefik
     repository: https://traefik.github.io/charts
-    version: 41.2.0
-digest: sha256:5d2f07ab2d5efb3bba93a48bbfe82cb04dd60111661979496cb36bc8e18637a8
-generated: "2026-08-14T14:29:43.184394431+02:00"
+    version: 41.3.0
+digest: sha256:2bb6bb04e728f97c4f08496db1a9676827ae38c4e85658950206931bdcc25699
+generated: "2026-08-22T14:49:38.475431046+02:00"
