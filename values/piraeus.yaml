@@ -5,6 +5,23 @@ extraManifests:
       name: storage-pool
     spec:
       storagePools:
-        - name: app-pool
+        - name: pool
           fileThinPool:
-            directory: /var/lib/piraeus-datastore/app-pool
+            directory: /var/lib/piraeus-datastore/pool
+
+  - apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      name: replicated-storage
+    provisioner: linstor.csi.linbit.com
+    allowVolumeExpansion: true
+    volumeBindingMode: WaitForFirstConsumer
+    parameters:
+      linstor.csi.linbit.com/placementCount: "2"
+      linstor.csi.linbit.com/storagePool: pool
+
+operator:
+  securityContext:
+    # The linstor-csi-node image tries to create /var/lib/kubernetes, but when /var/lib is read-only, that doesn't work.
+    # Probably a bug.
+    readOnlyRootFilesystem: false

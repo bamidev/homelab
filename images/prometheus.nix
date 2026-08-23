@@ -83,10 +83,6 @@ pkgs.dockerTools.buildLayeredImage {
 
   config = {
     Cmd = [
-      "${pkgs.flock}/bin/flock"
-      "--verbose"
-      "-n"
-      "/mnt"
       "${entrypointScript}/bin/entrypoint.sh"
     ];
     ExposedPorts = {

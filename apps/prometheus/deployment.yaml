@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       app: main
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -20,10 +22,13 @@ spec:
             server: nas.kubes
             path: /exhdd/prometheus
             readOnly: false
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
       containers:
         - name: app
           image: docker.io/library/prometheus:latest
           imagePullPolicy: Never
           volumeMounts:
-            - name: nas-mount
+            - name: piraeus-volume
               mountPath: /mnt

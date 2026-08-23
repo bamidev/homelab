@@ -12,23 +12,23 @@ spec:
   selector:
     matchLabels:
       app: production
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: production
     spec:
       volumes:
-        - name: nas-mount
-          nfs:
-            server: nas.kubes
-            path: /exhdd/nextcloud
-            readOnly: false
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-pvc
       containers:
         - name: app
           image: docker.io/library/nextcloud:latest
           imagePullPolicy: Never
           volumeMounts:
-            - name: nas-mount
+            - name: piraeus-volume
               mountPath: /mnt
           env:
             - name: POSTGRES_PASSWORD

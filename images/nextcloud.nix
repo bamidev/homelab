@@ -84,7 +84,7 @@ let
     php_admin_value[memory_limit] = 512M
   '';
 
-  entryPointScript = pkgs.writers.writeBashBin "entrypoint" ''
+  entryPointScript = pkgs.writers.writeBashBin "entrypoint.sh" ''
     set -ex
     trap "kill 0" EXIT
 
@@ -181,13 +181,7 @@ pkgs.dockerTools.buildImage {
 
   config = {
     Cmd = [
-      # Make sure to exclusively lock the mounted NAS folder, so that no second Nextcloud pod can
-      # mount it, and we can't get data corruption when multiple pods happen to use the NAS folder.
-      "${pkgs.flock}/bin/flock"
-      "--verbose"
-      "-n"
-      "/mnt"
-      "${entryPointScript}/bin/entrypoint"
+      "${entryPointScript}/bin/entrypoint.sh"
     ];
     Env = [
       "NEXTCLOUD_CONFIG_DIR=/var/nextcloud/config"

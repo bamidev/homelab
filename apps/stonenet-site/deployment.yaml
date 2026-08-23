@@ -15,6 +15,9 @@ spec:
         app: production-site
     spec:
       volumes:
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: get-stonenet-pvc
         - name: nas-mount
           nfs:
             server: nas.kubes
@@ -25,5 +28,5 @@ spec:
           image: docker.io/library/stonenet-site:latest
           imagePullPolicy: Never
           volumeMounts:
-            - name: nas-mount
+            - name: piraeus-volume
               mountPath: /mnt
