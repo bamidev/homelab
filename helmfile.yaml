@@ -54,7 +54,6 @@ releases:
   - name: linstor-cluster
     namespace: piraeus-datastore
     chart: oci://ghcr.io/piraeusdatastore/helm-charts/linstor-cluster
-    values: [ values/linstor-cluster.yaml ]
     needs:
       - piraeus-datastore/piraeus-operator
 
@@ -93,10 +92,15 @@ releases:
   - name: grafana
     namespace: grafana
     chart: ./apps/grafana
+    needs:
+      - cnpg-system/cnpg
 
   - name: nextcloud
     namespace: nextcloud
     chart: ./apps/nextcloud
+    needs:
+      - cnpg-system/cnpg
+      - piraeus-datastore/linstor-cluster
 
   - name: owncast
     namespace: owncast
@@ -105,11 +109,15 @@ releases:
   - name: prometheus
     namespace: prometheus
     chart: ./apps/prometheus
+    needs:
+      - piraeus-datastore/linstor-cluster
   
   - name: stonenet-site
     namespace: stonenet
     chart: ./apps/stonenet-site
+    needs:
+      - piraeus-datastore/linstor-cluster
   
-  - name: synapse
-    namespace: synapse
-    chart: ./apps/synapse
+  #- name: synapse
+  #  namespace: synapse
+  #  chart: ./apps/synapse
