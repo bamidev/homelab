@@ -30,3 +30,4 @@ spec:
           volumeMounts:
             - name: piraeus-volume
               mountPath: /mnt
+              readOnly: true
