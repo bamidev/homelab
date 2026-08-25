@@ -14,6 +14,11 @@ let
         service: nextcloud
 
     scrape_configs:
+      # Piraeus operator metric
+      - job_name: piraeus
+        static_configs:
+          - targets: ["piraeus-operator-controller-manager-metrics-service.piraeus-datastore.svc.cluster.local:443"]
+
       # Prometheus self-monitoring
       - job_name: "prometheus"
         static_configs:
