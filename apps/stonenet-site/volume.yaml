@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: get-stonenet-pvc
+  name: release-files
   namespace: stonenet
 spec:
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   storageClassName: replicated-storage
   resources:
     requests:

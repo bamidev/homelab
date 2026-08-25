@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: piraeus-volume
           persistentVolumeClaim:
-            claimName: get-stonenet-pvc
+            claimName: release-files
         - name: nas-mount
           nfs:
             server: nas.kubes

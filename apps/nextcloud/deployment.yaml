@@ -22,7 +22,7 @@ spec:
       volumes:
         - name: piraeus-volume
           persistentVolumeClaim:
-            claimName: nextcloud-pvc
+            claimName: filestore
       containers:
         - name: app
           image: docker.io/library/nextcloud:latest

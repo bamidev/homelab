@@ -24,7 +24,7 @@ spec:
             readOnly: false
         - name: piraeus-volume
           persistentVolumeClaim:
-            claimName: prometheus-pvc
+            claimName: database
       containers:
         - name: app
           image: docker.io/library/prometheus:latest
