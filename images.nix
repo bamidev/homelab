@@ -9,6 +9,7 @@ let
     gnused
     iproute2
     nano
+    netcat
     ps
     su
   ];
