@@ -10,10 +10,11 @@ let
     {
       Export_Id = 1;
       Path = /mnt/bamilab;
-      Pseudo = /;
+      Pseudo = /bamilab;
       Access_Type = RW;
       Squash = root_squash;
-      Sectype = krb5p;
+      SecType = sys;
+      # TODO: Sectype = krb5p;
       FSAL {
         Name = VFS;
       }
@@ -21,12 +22,13 @@ let
     
     EXPORT
     {
-      Export_Id = 1;
+      Export_Id = 2;
       Path = /mnt/shared;
-      Pseudo = /;
+      Pseudo = /shared;
       Access_Type = RW;
       Squash = root_squash;
-      Sectype = krb5p;
+      SecType = sys;
+      # TODO: Sectype = krb5p;
       FSAL {
         Name = VFS;
       }
@@ -34,18 +36,16 @@ let
 
     LOG {
       Default_Log_Level = INFO;
-
-      Components {
-        ALL {
-          Destination = STDERR;
-        }
-      }
     }
   '';
 
   # The script that is being ran for the duration of the container
   entrypointScript = pkgs.writers.writeBashBin "entrypoint.sh" ''
     set -ex
+
+    # Create folders if they don't exist yet
+    mkdir -p /mnt/bamilab
+    mkdir -p /mnt/shared
     ${pkgs.nfs-ganesha}/bin/ganesha.nfsd -L /dev/stderr -x -F -f ${configFile}
   '';
 in
@@ -53,7 +53,8 @@ pkgs.dockerTools.buildLayeredImage {
   name = "ganesha";
   
   fakeRootCommands = ''
-    mkdir -p var/run/ganesha
+    mkdir -p etc tmp var/run/ganesha var/lib/nfs/ganesha
+    ln -s /proc/mounts etc/mtab
   '';
 
   config = {
