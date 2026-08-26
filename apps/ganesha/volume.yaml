@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-folder
+  namespace: ganesha
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: replicated-storage
+  resources:
+    requests:
+      storage: 200Gi
