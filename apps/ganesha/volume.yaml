@@ -5,7 +5,7 @@ metadata:
   namespace: ganesha
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: replicated-storage
   resources:
     requests:
