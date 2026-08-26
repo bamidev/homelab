@@ -5,7 +5,7 @@ extraManifests:
       name: storage-pool
     spec:
       storagePools:
-        - name: pool
+        - name: piraeus-pool
           zfsThinPool:
             zPool: tank 
 
@@ -18,21 +18,7 @@ extraManifests:
     volumeBindingMode: WaitForFirstConsumer
     parameters:
       linstor.csi.linbit.com/placementCount: "2"
-      linstor.csi.linbit.com/storagePool: pool
-
-  #- apiVersion: traefik.io/v1alpha1
-  #  kind: IngressRouteTCP
-  #  metadata:
-  #    name: piraeus-nfs-route
-  #    namespace: piraeus-datastore # Match the namespace where your Piraeus service lives
-  #  spec:
-  #    entryPoints:
-  #      - nfs # References the entrypoint created in Step 1
-  #    routes:
-  #      - match: HostSNI(`*`) # Matches all TCP traffic on this port
-  #        services:
-  #          - name: linstor-csi-nfs # Replace with your exact Piraeus service name
-  #            port: 999 # The backend port exposed by Piraeus
+      linstor.csi.linbit.com/storagePool: piraeus-pool
 
 operator:
   securityContext:
