@@ -5,6 +5,7 @@ let
     ${pkgs.bundix}/bin/bundix --gemfile=${pkgs.gitlab}/share/gitlab/Gemfile --lockfile=${pkgs.gitlab}/share/gitlab/Gemfile.lock
     echo gemset.nix file created in current directory.
   '';
-in pkgs.mkShell {
+in
+pkgs.mkShell {
   packages = [ gitlabGenerateGemsetScript ];
 }

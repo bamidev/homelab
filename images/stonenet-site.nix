@@ -35,7 +35,7 @@ let
           server_name get.stonenet.org;
           access_log /dev/stderr;
           port_in_redirect off;
-  
+
           root /mnt;
 
           location / {

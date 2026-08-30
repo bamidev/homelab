@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: production
+  namespace: vikunja
+  labels:
+    app: production
+spec:
+  selector:
+    matchLabels:
+      app: production
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: production
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/vikunja:latest
+          imagePullPolicy: Never
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: production-database-app
+                  key: password

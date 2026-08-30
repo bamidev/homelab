@@ -41,17 +41,20 @@ let
 
   # The script that is being ran for the duration of the container
   entrypointScript = pkgs.writers.writeBashBin "entrypoint.sh" ''
-    set -ex
+    set -x
 
     # Create folders if they don't exist yet
     mkdir -p /mnt/bamilab
     mkdir -p /mnt/shared
+
     ${pkgs.nfs-ganesha}/bin/ganesha.nfsd -L /dev/stderr -x -F -f ${configFile}
+
+    sleep 3600
   '';
 in
 pkgs.dockerTools.buildLayeredImage {
   name = "ganesha";
-  
+
   fakeRootCommands = ''
     mkdir -p etc tmp var/run/ganesha var/lib/nfs/ganesha
     ln -s /proc/mounts etc/mtab

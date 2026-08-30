@@ -124,6 +124,12 @@ releases:
     needs:
       - piraeus-datastore/linstor-cluster
   
+  - name: vikunja
+    namespace: vikunja
+    chart: ./apps/vikunja
+    needs:
+      - cnpg-system/cnpg
+
   #- name: synapse
   #  namespace: synapse
   #  chart: ./apps/synapse
