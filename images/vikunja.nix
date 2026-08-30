@@ -9,6 +9,12 @@ let
       password:
         file: /var/vikunja/secrets/database-password
 
+    files:
+      basepath: /mnt
+
+    metrics:
+      enabled: true
+
     service:
       publicurl: http://vikunja.bamilab.space
   '';
