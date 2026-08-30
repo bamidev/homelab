@@ -28,7 +28,7 @@ let
   '';
 in
 pkgs.dockerTools.buildLayeredImage {
-  name = "ganesha";
+  name = "vikunja";
 
   fakeRootCommands = ''
     mkdir -p etc/vikunja

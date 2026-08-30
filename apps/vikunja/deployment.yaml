@@ -16,10 +16,17 @@ spec:
       labels:
         app: production
     spec:
+      volumes:
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: filestore
       containers:
         - name: app
           image: docker.io/library/vikunja:latest
           imagePullPolicy: Never
+          volumeMounts:
+            - name: piraeus-volume
+              mountPath: /mnt
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
