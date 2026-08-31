@@ -9,4 +9,4 @@ spec:
   storageClassName: replicated-storage
   resources:
     requests:
-      storage: 10Gi
+      storage: 100Gi
