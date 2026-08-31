@@ -89,11 +89,11 @@ releases:
       - metallb/metallb
 
   ### My apps ###
-  - name: ganesha
-    namespace: ganesha
-    chart: ./apps/ganesha
-    needs:
-      - piraeus-datastore/linstor-cluster
+  #- name: ganesha
+  #  namespace: ganesha
+  #  chart: ./apps/ganesha
+  #  needs:
+  #    - piraeus-datastore/linstor-cluster
 
   - name: grafana
     namespace: grafana
