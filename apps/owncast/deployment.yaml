@@ -15,15 +15,16 @@ spec:
         app: production
     spec:
       volumes:
-        - name: nas-mount
-          nfs:
-            server: nas.kubes
-            path: /exhdd/owncast
-            readOnly: false
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: filestore
       containers:
         - name: app
           image: docker.io/library/owncast:latest
           imagePullPolicy: Never
+          volumeMounts:
+            - name: piraeus-volume
+              mountPath: /mnt
           env:
             - name: ADMIN_PASSWORD
               valueFrom:
