@@ -2,6 +2,11 @@
 { pkgs, ... }:
 let
   configFile = pkgs.writers.writeText "config.yaml" ''
+    cors:
+      enable: true
+      origins:
+        - http://127.0.0.1:45735
+
     database:
       type: "postgres"
       user: "vikunja"
