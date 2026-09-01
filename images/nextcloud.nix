@@ -2,10 +2,17 @@
 # Apache is used because Nextcloud uses an .htaccess file to handle some of the URL rewriting.
 { pkgs, ... }:
 let
+  ### Packages ###
   nextcloud = pkgs.nextcloud34;
   php = pkgs.php85;
   ncApps = nextcloud.packages.apps;
 
+  ### Parameters ###
+  nextcloudConfigPath = "/var/nextcloud/config";
+  user = "httpd";
+  group = user;
+
+  ### Config files ###
   apacheConfig = pkgs.writeText "httpd.conf" (
     with pkgs;
     ''
@@ -13,10 +20,10 @@ let
       ServerRoot /var/lib/httpd
       Listen 8080
 
-      User httpd
-      Group httpd
+      User ${user}
+      Group ${group}
 
-      SetEnv NEXTCLOUD_CONFIG_DIR /var/nextcloud/config
+      SetEnv NEXTCLOUD_CONFIG_DIR ${nextcloudConfigPath}
 
       LoadModule alias_module ${apacheHttpd}/modules/mod_alias.so
       LoadModule authn_core_module ${apacheHttpd}/modules/mod_authn_core.so
@@ -62,13 +69,13 @@ let
 
   phpPoolConfig = pkgs.writeText "www.conf" ''
     [www]
-    user = httpd
-    group = httpd
+    user = ${user}
+    group = ${group}
 
     listen = /var/run/php-fpm.sock
 
-    listen.owner = httpd
-    listen.group = httpd
+    listen.owner = ${user}
+    listen.group = ${group}
     listen.mode = 0660
 
     pm = ondemand
@@ -116,7 +123,7 @@ let
     mkdir -p /mnt/core/skeleton
     mkdir -p /mnt/data
     mkdir -p /mnt/apps
-    chown -R httpd:httpd /mnt
+    chown -R ${user}:${group} /mnt
 
     # Remove existing admin user files, because it will block the installation
     rm -rf /mnt/data/admin
@@ -149,7 +156,7 @@ let
 
   occScript = pkgs.writers.writeBashBin "nextcloud-occ" ''
     set -e
-    ${pkgs.util-linux}/bin/runuser -u httpd -- ${php}/bin/php ${nextcloud}/occ $@
+    ${pkgs.util-linux}/bin/runuser -u ${user} -- ${php}/bin/php ${nextcloud}/occ $@
   '';
 in
 pkgs.dockerTools.buildImage {
@@ -157,14 +164,14 @@ pkgs.dockerTools.buildImage {
 
   runAsRoot = with pkgs; ''
     ${dockerTools.shadowSetup}
-    groupadd -r httpd
-    useradd -r httpd -g httpd -d /var/lib/httpd
+    groupadd -r ${group}
+    useradd -r ${user} -g ${group} -d /var/lib/httpd
     mkdir -p /var/lib/httpd/logs
-    chown -R httpd:httpd /var/lib/httpd
+    chown -R ${user}:${group} /var/lib/httpd
 
     mkdir -p /var/run
     mkdir -p /var/nextcloud/apps
-    mkdir -p /var/nextcloud/config
+    mkdir -p ${nextcloudConfigPath}
 
     cp -r ${ncApps.bookmarks} /var/nextcloud/apps/bookmarks
     cp -r ${ncApps.calendar} /var/nextcloud/apps/calendar
@@ -173,7 +180,7 @@ pkgs.dockerTools.buildImage {
 
     chown -R httpd:httpd /var/nextcloud
     chmod -R 0750 /var/nextcloud/
-    chmod 0640 /var/nextcloud/config/config.php
+    chmod 0640 ${nextcloudConfigPath}/config.php
   '';
 
   contents = with pkgs; [
@@ -189,7 +196,7 @@ pkgs.dockerTools.buildImage {
       "${entryPointScript}/bin/entrypoint.sh"
     ];
     Env = [
-      "NEXTCLOUD_CONFIG_DIR=/var/nextcloud/config"
+      "NEXTCLOUD_CONFIG_DIR=${nextcloudConfigPath}"
     ];
     ExposedPorts = {
       "8080/tcp" = { };
