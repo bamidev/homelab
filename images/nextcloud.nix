@@ -137,6 +137,7 @@ let
     ${occScript}/bin/nextcloud-occ app:enable bookmarks
     ${occScript}/bin/nextcloud-occ app:enable calendar
     ${occScript}/bin/nextcloud-occ app:enable contacts
+    ${occScript}/bin/nextcloud-occ app:enable music
     ${occScript}/bin/nextcloud-occ app:enable server-info # Should already be enabled
 
 
@@ -168,6 +169,7 @@ pkgs.dockerTools.buildImage {
     cp -r ${ncApps.bookmarks} /var/nextcloud/apps/bookmarks
     cp -r ${ncApps.calendar} /var/nextcloud/apps/calendar
     cp -r ${ncApps.contacts} /var/nextcloud/apps/contacts
+    cp -r ${ncApps.music} /var/nextcloud/apps/music
 
     chown -R httpd:httpd /var/nextcloud
     chmod -R 0750 /var/nextcloud/
