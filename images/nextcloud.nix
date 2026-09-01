@@ -59,6 +59,10 @@ let
     ''
   );
 
+  crontabFile = pkgs.writers.writeText "crontab" ''
+    */5 * * * * ${pkgs.util-linux}/bin/runuser -u ${user} -- ${php}/bin/php -f ${nextcloud}/cron.php
+  '';
+
   nextcloudConfig = import ./nextcloud/config.php.nix { inherit nextcloud; };
 
   phpFpmConfig = pkgs.writeText "php-fpm.conf" ''
@@ -106,6 +110,7 @@ let
     # Spawn php-fpm, apache and the nextcloud-exporter
     ${php}/bin/php-fpm -F -O --fpm-config ${phpFpmConfig} &
     ${pkgs.apacheHttpd}/bin/httpd -D FOREGROUND -f ${apacheConfig} &
+    ${pkgs.supercronic}/bin/supercronic ${crontabFile} &
     ${pkgs.prometheus-nextcloud-exporter}/bin/nextcloud-exporter --server http://127.0.0.1:8080 \
       --username monitoring --password "$MONITORING_PASSWORD" &
 
@@ -147,6 +152,9 @@ let
     ${occScript}/bin/nextcloud-occ app:enable music
     ${occScript}/bin/nextcloud-occ app:enable server-info # Should already be enabled
 
+    # Use the recommended cron job method, because the default method does not seem to run all jobs.
+    # This can cause issues with file locking for example.
+    ${occScript}/bin/nextcloud-occ background:cron
 
     NC_PASS="$MONITORING_PASSWORD" ${occScript}/bin/nextcloud-occ user:add --group=admin --password-from-env monitoring # Should already be enabled
 
