@@ -22,6 +22,7 @@ extraManifests:
     parameters:
       linstor.csi.linbit.com/placementCount: "2"
       linstor.csi.linbit.com/storagePool: piraeus-pool
+      property.linstor.csi.linbit.com/DrbdOptions/Resource/quorum: "off"
 
 operator:
   securityContext:
