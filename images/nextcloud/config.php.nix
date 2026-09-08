@@ -7,6 +7,7 @@
     'secret' => 'NEXTCLOUD_SECRET',
     'trusted_domains' => [
       'nextcloud.bamilab.space',              # The external domain
+      'nextcloud.local.bamilab.space',        # The LAN-local domain
       'service.nextcloud.svc.cluster.local',  # The cluster-wide local domain
       '192.168.0.77',                         # The VRRP ip address
       # The 3 VPN IP addresses of the kubernetes control nodes

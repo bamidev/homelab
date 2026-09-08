@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`nextcloud.bamilab.space`)
+    - match: Host(`nextcloud.bamilab.space`) || Host(`nextcloud.local.bamilab.space`)
       kind: Rule
       services:
         - name: service
