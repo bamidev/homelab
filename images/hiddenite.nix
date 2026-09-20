@@ -6,8 +6,19 @@ let
       path: /mnt/.library.sqlite
 
     library:
-      paths:
-        - /mnt
+      folders:
+        - path: /mnt/collection
+          webdav:
+            enable: true
+            username: bamidev
+        - path: /mnt/fantasy
+          webdav:
+            enable: true
+            username: bamidev
+        - path: /mnt/ambience
+          webdav:
+            enable: true
+            username: bamidev
 
     server:
       port: 8080
@@ -23,6 +34,8 @@ let
     ${git}/bin/git clone https://github.com/bamidev/hiddenite /tmp/hiddenite
     ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/common install
     ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/common run build
+    ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/client install
+    ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/client run build
     ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/server install
     ${nix}/bin/nix --extra-experimental-features 'nix-command flakes' develop /tmp/hiddenite -c npm --prefix /tmp/hiddenite/server run start
   '');
@@ -31,8 +44,10 @@ pkgs.dockerTools.buildLayeredImage {
   name = "hiddenite";
 
   fakeRootCommands = ''
-    mkdir -p usr/bin
+    mkdir -p etc/hiddenite usr/bin
     ln -s ${pkgs.coreutils}/bin/env usr/bin/env
+
+    cp ${configFile} etc/hiddenite/config.yaml
   '';
 
   config = {
