@@ -101,6 +101,12 @@ releases:
     needs:
       - cnpg-system/cnpg
 
+  - name: hiddenite
+    namespace: hiddenite
+    chart: ./apps/hiddenite
+    needs:
+      - piraeus-datastore/linstor-cluster
+
   - name: nextcloud
     namespace: nextcloud
     chart: ./apps/nextcloud
