@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: production
+  namespace: hiddenite
+  labels:
+    app: production
+spec:
+  selector:
+    matchLabels:
+      app: production
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: production
+    spec:
+      volumes:
+        - name: piraeus-volume
+          persistentVolumeClaim:
+            claimName: filestore
+      containers:
+        - name: app
+          image: docker.io/library/hiddenite:latest
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: piraeus-volume
+              mountPath: /mnt
+          env:
+            - name: HIDDENITE_WEBDAV_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: webdav-password

@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: route
+  namespace: hiddenite
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`music.bamilab.space`) || Host(`music.local.bamilab.space`)
+      kind: Rule
+      services:
+        - name: service
+          port: 4433
